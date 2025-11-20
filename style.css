@@ -1,0 +1,15 @@
+h1{
+    text-align: center;
+    color: blue;
+    background-color: black;
+}
+body{
+    background-image:url(solar.png) ;
+    background-size: cover;
+}
+p{
+  color:rebeccapurple ;  
+}
+#ict{
+    color: black;
+}
