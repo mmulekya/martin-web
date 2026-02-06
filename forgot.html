@@ -1,0 +1,37 @@
+<h2>Forgot Password</h2>
+
+<form method="post">
+  <input type="email" name="email" placeholder="Your email" required>
+  <button type="submit">Send reset link</button>
+</form>
+
+<?php
+include "db.php";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+  $email = trim($_POST['email']);
+
+  $user = $conn->query("SELECT id FROM users WHERE email='$email'");
+
+  if ($user->num_rows === 1) {
+
+    $token  = bin2hex(random_bytes(32)); // secure
+    $expire = date("Y-m-d H:i:s", strtotime("+1 hour"));
+
+    $conn->query("
+      UPDATE users 
+      SET reset_token='$token', reset_expire='$expire'
+      WHERE email='$email'
+    ");
+
+    $resetLink = "https://yoursite.com/reset.php?token=$token";
+
+    // For now (testing):
+    echo "Reset link: <a href='$resetLink'>$resetLink</a>";
+
+  } else {
+    echo "If that email exists, a reset link was sent.";
+  }
+}
+?>
